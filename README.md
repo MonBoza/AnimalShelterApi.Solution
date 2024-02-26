@@ -129,6 +129,7 @@ This Project assumes you have MySql Server and Workbench  installed if you do no
         "SecretKey": "[YOUR-SECRET-HERE]"
   }
 }
+
  9) In order to properly implement JSON Web Tokens for API authorization, replace [YOUR-SECRET-HERE] with your own personalized requirement string.
  The Secret is a string used to encode JWTs,  Depending on what type of algorithm being used, the Secret string will need to be a certain length. In this case, it needs to be at least 32 characters long.
 
