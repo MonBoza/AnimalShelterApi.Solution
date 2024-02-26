@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using AnimalShelterApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AnimalShelterApi.Controllers
 {
+  [Authorize]
   [Route("api/[controller]")]
   [ApiController]
   public class CatsController : ControllerBase

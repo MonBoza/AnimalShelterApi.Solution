@@ -102,9 +102,8 @@ This Project assumes you have MySql Server and Workbench  installed if you do no
   2) Open up your system Terminal or GitBash, navigate to your desktop with the command: `cd Desktop`, or whichever location suits you best.
   3) Clone the repository by running the following command to your desktop:
 
-    ```
     git clone https://github.com/MonBoza/AnimalShelterApi.Solution.git
-     ```
+     
   4) Run the command `cd AnimalShelterApi.Solution` to enter into the project directory.
   5) View or Edit:
       * Code Editor - Run the command `code .` to open the project in VisualStudio Code respectively for review and editing.
@@ -114,72 +113,109 @@ This Project assumes you have MySql Server and Workbench  installed if you do no
   7) Make sure appsettings.json is added to the .gitignore file and it is added to the repository before pushing with your personal information.
   8)  Within `appsettings.json`, put in the following code replacing the `uid` and the `pwd` values with your own username and password for MySQL.
 
-    ```
-
     {
-      "Logging": {
-          "LogLevel": {
-          "Default": "Warning"
-          }
-      },
-      "AllowedHosts": "*",
-      "ConnectionStrings": {
-          "DefaultConnection": "Server=localhost;Port=3306;database=animal_shelter_api;uid=[YOUR-USER-HERE];pwd=[YOUR-PASSWORD-HERE];""
-      }
-    }
-  ```
+    "Logging": {
+        "LogLevel": {
+        "Default": "Warning"
+        }
+    },
+    "AllowedHosts": "*",
+    "ConnectionStrings": {
+        "DefaultConnection": "Server=localhost;Port=3306;database=animal_shelter_api;uid=[YOUR-USERNAME-HERE];pwd=[YOUR-PASSWORD-HERE];"
+    },
+    "JwtSettings": {
+        "ValidAudience": "example-audience",
+        "ValidIssuer": "example-issuer",
+        "SecretKey": "[YOUR-SECRET-HERE]"
+  }
+}
+ 9) In order to properly implement JSON Web Tokens for API authorization, replace [YOUR-SECRET-HERE] with your own personalized requirement string.
+ The Secret is a string used to encode JWTs,  Depending on what type of algorithm being used, the Secret string will need to be a certain length. In this case, it needs to be at least 32 characters long.
 
-  #### To set upDatabase
+### To set upDatabase
+
   1) Navigate to AnimalShelterApi.Solution/AnimalShelterApi directory using the MacOS Terminal or Windows Powershell (e.g. `cd Desktop/AnimalShelterApi.Solution/AnimalShelterApi`).
   2) Run the command `dotnet ef database update` to generate the database through Entity Framework Core.
   3) (Optional) To update the database with any changes to the code, run the command `dotnet ef migrations add <MigrationsName>` which will use Entity Framework Core's code-first principle to generate a database update. After, run the previous command `dotnet ef database update` to update the database.
 
-  #### Launch the API
+#### Launch the API
+
   1) Navigate to AnimalShelterApi.Solution/AnimalShelterApi directory using the MacOS Terminal or Windows Powershell (e.g. `cd Desktop/AnimalShelterApi.Solution/AnimalShelterApi`).
   2) Run the command `dotnet run` to have access to the API in Postman or browser.
 
 ------------------------------
 
-## 🛰️ API Documentation
+##  API Documentation
+
 Explore the API endpoints in Postman or a browser. You will not be able to utilize authentication in a browser.
 
-### Using Swagger Documentation 
+### Using Swagger Documentation
+
 To explore the Animal Shelter API with NSwag, launch the project using `dotnet run` with the Terminal or Powershell, and input the following URL into your browser: `http://localhost:5001/swagger`
 
 ### Using the JSON Web Token
+
 In order to be authorized to use the POST, PUT, DELETE functionality of the API, please authenticate yourself through Postman.
 * Open Postman and create a POST request using the URL: `http://localhost:5000/api/users/authenticate`
 * Add the following query to the request as raw data in the Body tab:
-
-```bash
+<!-- fix this -->
 {
     "UserName": "ShelterAdmin",
     "Password": "epicodus"
 }
-```
 
 * The token will be generated in the response. Copy and paste it as the Token parameter in the Authorization tab.
 
 ### Note on CORS
+
 CORS is a W3C standard that allows a server to relax the same-origin policy. It is not a security feature, CORS relaxes security. It allows a server to explicitly allow some cross-origin requests while rejecting others. An API is not safer by allowing CORS.
 For more information or to see how CORS functions, see the [Microsoft documentation](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.2#how-cors).
 
-### Note on Pagination
-The AnimalShelter API returns a default of 25 results per page at a time, up to a maximum of 1000.
 
-To modify this, use the query parameters `limit` and `start` to alter the response results displayed. The `limit` parameter will specify how many results will be displayed, and the `start` parameter will specify which element in the response the limit should start counting.
+### Registering an Account using the JSON Web Token
 
-#### Example Query
+In order to be authorized to use the `POST`, `PUT` and `DELETE` functionality of the API you must first authenticate yourself.
+
+#### Registration
+
+Using Postman, we will setup a `POST` request to the `accounts\register` endpoint. Select the body tab, choose the 'raw' selection and select 'JSON' from the dropdown selection.
+
+In the body of the Post request, use the following format:
+
+```json
+{
+    "email": "email@testEmail.com",
+    "userName": "TestName",
+    "password": "Password1"
+}
+```
+
+- Note that the password must contain at least six characters, one non-alphanumeric character, at least one digit lowercase letter, at least one uppercase letter and at least two unique characters.
+
+### Using the JWT
+
+First SignIn to your account using this endpoint
+
+`https://localhost:5001/accounts/SignIn`
+
+then in the body sign in using your email and password in JSON format
+
+```json
+{
+    "email": "email@testEmail.com",
+    "password": "Password1"
+}
 
 ```
-https://localhost:5000/api/Dogs/?name=puppy&limit=200&start=20
-```
 
-To use default, _don't include_ `limit` and `start` or set them equal to zero.
+We want to copy the token token given in the body and navigate to the `Auth` tab and select `Bearer Token`, and then paste the token in the empty field to the right here is an example of how it should look.
 
-..........................................................................................
+<img src="img/JWTdiagram.png" alt="JWT diagram" width="300">
+
+you should now be able to use the api.
 
 ### Endpoints
+
 Base URL: `https://localhost:5001`
 
 #### HTTP Request Structure
@@ -193,6 +229,7 @@ DELETE /api/{component}/{id}
 ```
 
 #### Example Query
+
 `https://localhost:5001/api/Dogs/1`
 
 #### Sample JSON Response
@@ -279,6 +316,7 @@ https://localhost:5001/api/Dogs?name=wiggles
 #### Sample JSON Response
 
 ```json
+{
   "dogId":1,
   "name":"Rex",
   "age":3,
