@@ -113,6 +113,7 @@ This Project assumes you have MySql Server and Workbench  installed if you do no
   7) Make sure appsettings.json is added to the .gitignore file and it is added to the repository before pushing with your personal information.
   8)  Within `appsettings.json`, put in the following code replacing the `uid` and the `pwd` values with your own username and password for MySQL.
 
+```json
     {
     "Logging": {
         "LogLevel": {
@@ -129,6 +130,7 @@ This Project assumes you have MySql Server and Workbench  installed if you do no
         "SecretKey": "[YOUR-SECRET-HERE]"
   }
 }
+```
 
  9) In order to properly implement JSON Web Tokens for API authorization, replace [YOUR-SECRET-HERE] with your own personalized requirement string.
  The Secret is a string used to encode JWTs,  Depending on what type of algorithm being used, the Secret string will need to be a certain length. In this case, it needs to be at least 32 characters long.
@@ -153,25 +155,6 @@ Explore the API endpoints in Postman or a browser. You will not be able to utili
 ### Using Swagger Documentation
 
 To explore the Animal Shelter API with NSwag, launch the project using `dotnet run` with the Terminal or Powershell, and input the following URL into your browser: `http://localhost:5001/swagger`
-
-### Using the JSON Web Token
-
-In order to be authorized to use the POST, PUT, DELETE functionality of the API, please authenticate yourself through Postman.
-* Open Postman and create a POST request using the URL: `http://localhost:5000/api/users/authenticate`
-* Add the following query to the request as raw data in the Body tab:
-<!-- fix this -->
-{
-    "UserName": "ShelterAdmin",
-    "Password": "epicodus"
-}
-
-* The token will be generated in the response. Copy and paste it as the Token parameter in the Authorization tab.
-
-### Note on CORS
-
-CORS is a W3C standard that allows a server to relax the same-origin policy. It is not a security feature, CORS relaxes security. It allows a server to explicitly allow some cross-origin requests while rejecting others. An API is not safer by allowing CORS.
-For more information or to see how CORS functions, see the [Microsoft documentation](https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.2#how-cors).
-
 
 ### Registering an Account using the JSON Web Token
 
@@ -209,7 +192,7 @@ then in the body sign in using your email and password in JSON format
 
 ```
 
-We want to copy the token token given in the body and navigate to the `Auth` tab and select `Bearer Token`, and then paste the token in the empty field to the right here is an example of how it should look.
+We want to copy the token given in the body and navigate to the `Auth` tab and select `Bearer Token`, and then paste the token in the empty field to the right here is an example of how it should look.
 
 <img src="img/JWTdiagram.png" alt="JWT diagram" width="300">
 
